@@ -18,8 +18,8 @@ public class StudentResponse {
     private String maritalStatus;
     private String phone;
     private String address;
-    private String facebook;
-    private String twitter;
+
+
     private String linkedin;
     private String personalInfo;
     private String department;

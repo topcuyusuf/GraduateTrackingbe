@@ -47,9 +47,12 @@ public class StudentController {
     }
 
     @PutMapping("/{id}")
-    public StudentResponse update(@PathVariable(name = "id")long id,@RequestBody StudentRequest request){
-        return toResponse(studentService.updateStudent(id,request.toDto()));
+    public StudentResponse update(@PathVariable(name = "id") String id, @RequestBody StudentRequest request) {
+        StudentDto dto = request.toDto();
+        dto.setStudentId(Long.parseLong(id));
+        return toResponse(studentService.updateStudent(Long.parseLong(id), dto));
     }
+
 
     @DeleteMapping("/deleteStudent/{id}")
     public void deleteStudent(@PathVariable Long id) {
@@ -90,6 +93,5 @@ public class StudentController {
                 .password(studentDto.getPassword())
                 .build();
     }
-
 }
 

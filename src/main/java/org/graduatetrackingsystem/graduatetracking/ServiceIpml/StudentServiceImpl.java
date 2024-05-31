@@ -64,8 +64,32 @@ public class StudentServiceImpl implements StudentService {
         Student student = studentRepository.findById(studentId).orElse(null);
 
         if (student != null) {
-            // Güncellemeler
-            student = toEntity(studentDto, student);
+            // Update only non-null fields from studentDto to student
+            if (studentDto.getCv() != null) student.setCv(studentDto.getCv());
+            if (studentDto.getStudentNumber() != null) student.setStudentNumber(studentDto.getStudentNumber());
+            if (studentDto.getEmail() != null) student.setEmail(studentDto.getEmail());
+            if (studentDto.getFullName() != null) student.setFullName(studentDto.getFullName());
+            if (studentDto.getGender() != null) student.setGender(studentDto.getGender());
+            if (studentDto.getBirthdate() != null) student.setBirthdate(studentDto.getBirthdate());
+            if (studentDto.getBirthplace() != null) student.setBirthplace(studentDto.getBirthplace());
+            if (studentDto.getMaritalStatus() != null) student.setMaritalStatus(studentDto.getMaritalStatus());
+            if (studentDto.getPhone() != null) student.setPhone(studentDto.getPhone());
+            if (studentDto.getAddress() != null) student.setAddress(studentDto.getAddress());
+            if (studentDto.getLinkedin() != null) student.setLinkedin(studentDto.getLinkedin());
+            if (studentDto.getPersonalInfo() != null) student.setPersonalInfo(studentDto.getPersonalInfo());
+            if (studentDto.getDepartment() != null) student.setDepartment(studentDto.getDepartment());
+            if (studentDto.getProgram() != null) student.setProgram(studentDto.getProgram());
+            if (studentDto.getEducationType() != null) student.setEducationType(studentDto.getEducationType());
+            if (studentDto.getAdmissionYear() != 0) student.setAdmissionYear(studentDto.getAdmissionYear());
+            if (studentDto.getGraduationYear() != 0) student.setGraduationYear(studentDto.getGraduationYear());
+            if (studentDto.getDiplomaGrade() != null) student.setDiplomaGrade(studentDto.getDiplomaGrade());
+            if (studentDto.getEmploymentStatus() != null) student.setEmploymentStatus(studentDto.getEmploymentStatus());
+            if (studentDto.getInterestedAreas() != null) student.setInterestedAreas(studentDto.getInterestedAreas());
+            if (studentDto.getImage() != null) student.setImage(studentDto.getImage());
+            if (studentDto.getPassword() != null) student.setPassword(studentDto.getPassword());
+
+            // Ensure the ID is correctly set and not altered
+            student.setId(studentId);
 
             student = studentRepository.save(student);
             return toDto(student);
@@ -74,13 +98,16 @@ public class StudentServiceImpl implements StudentService {
         return null;
     }
 
+
     @Override
     public void deleteStudent(Long id) {
         studentRepository.deleteById(id);
     }
 
     private Student toEntity(StudentDto dto, Student entity) {
-        entity.setId(dto.getStudentId());
+        if (dto.getStudentId() != null) {
+            entity.setId(dto.getStudentId());
+        }
         entity.setCv(dto.getCv());
         entity.setStudentNumber(dto.getStudentNumber());
         entity.setEmail(dto.getEmail());
@@ -102,9 +129,10 @@ public class StudentServiceImpl implements StudentService {
         entity.setEmploymentStatus(dto.getEmploymentStatus());
         entity.setInterestedAreas(dto.getInterestedAreas());
         entity.setPassword(dto.getPassword());
-        entity.setImage(dto.getImage());  // image alanını set ediyoruz
+        entity.setImage(dto.getImage());
         return entity;
     }
+
 
     private StudentDto toDto(Student entity) {
         return StudentDto.builder()
